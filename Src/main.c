@@ -53,6 +53,7 @@
 /* USER CODE BEGIN Includes */
 #include "hcms2915.h"
 #include "system.h"
+#include "rtc.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -393,6 +394,7 @@ void StartDefaultTask(void const * argument)
 	
   /* USER CODE BEGIN 5 */
 	
+	RTC_Init();
 	HCMS_Init();
 	System_Init();
   /* Infinite loop */

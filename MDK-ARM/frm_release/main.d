@@ -53,3 +53,4 @@ frm_release\main.o: ../Inc/hcms2915.h
 frm_release\main.o: ../Inc/font5x7.h
 frm_release\main.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\string.h
 frm_release\main.o: ../Inc/system.h
+frm_release\main.o: ../Inc/rtc.h

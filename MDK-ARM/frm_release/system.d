@@ -53,3 +53,4 @@ frm_release\system.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.
 frm_release\system.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 frm_release\system.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 frm_release\system.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+frm_release\system.o: ../Inc/rtc.h

@@ -388,15 +388,27 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
+            </File>
+            <File>
+              <FileName>hcms2915.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\hcms2915.c</FilePath>
+            </File>
+            <File>
+              <FileName>system.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\system.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
               <FileName>stm32l0xx_it.c</FileName>
@@ -409,24 +421,14 @@
               <FilePath>../Src/stm32l0xx_hal_msp.c</FilePath>
             </File>
             <File>
-              <FileName>freertos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/freertos.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32l0xx_hal_timebase_TIM.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32l0xx_hal_timebase_TIM.c</FilePath>
             </File>
             <File>
-              <FileName>hcms2915.c</FileName>
+              <FileName>freertos.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\hcms2915.c</FilePath>
-            </File>
-            <File>
-              <FileName>system.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\system.c</FilePath>
+              <FilePath>../Src/freertos.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -594,6 +596,9 @@
               <FilePath>../Middlewares/Third_Party/FreeRTOS/Source/tasks.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>

@@ -3,13 +3,12 @@
 //#include "settings.h"
 #include "hcms2915.h"
 #include "cmsis_os.h"
+#include "rtc.h"
 
-RTC_HandleTypeDef hrtc;
 
 static eSystemState			eCurrentSysState;
 static eSettingsState		eCurrentSettingsState;
-static RTC_TimeTypeDef	rtcTime;
-static RTC_DateTypeDef	rtcDate;
+
 
 uint8_t		btnPressCnt;
 uint8_t		btnPressState;
@@ -20,25 +19,7 @@ void	System_GetDateTimeFromRTC(void);
 osThreadId systemTaskHandle;
 
 void System_Init()
-{
-  hrtc.Instance = RTC;
-	
-	if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2)
-	{
-		hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-		hrtc.Init.AsynchPrediv = 127;
-		hrtc.Init.SynchPrediv = 255;
-		hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-		hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
-		hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-		hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-		if (HAL_RTC_Init(&hrtc) != HAL_OK)
-		{
-			_Error_Handler(__FILE__, __LINE__);
-		}
-    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
-  }
-	
+{	
 	eCurrentSysState = SYS_TIME;
 	eCurrentSettingsState = SELECT_DEFAULT;
 	
@@ -184,54 +165,54 @@ void System_Process(void const * argument)
 			case SYS_SET_HOUR:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcTime.Hours++;
-					if(rtcTime.Hours>23)rtcTime.Hours = 0;
-					HAL_RTC_SetTime(&hrtc,&rtcTime,RTC_FORMAT_BIN);
+					RTC_TimeTypeDef	*rtcTime = RTC_GetRTCTime();
+					rtcTime->Hours++;
+					RTC_SetTime(rtcTime);
 				}
 			}break;
 			
 			case SYS_SET_MIN:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcTime.Minutes++;
-					if(rtcTime.Minutes>59)rtcTime.Minutes = 0;
-					HAL_RTC_SetTime(&hrtc,&rtcTime,RTC_FORMAT_BIN);
+					RTC_TimeTypeDef	*rtcTime = RTC_GetRTCTime();
+					rtcTime->Minutes++;
+					RTC_SetTime(rtcTime);
 				}
 			}break;
 			
 			case SYS_SET_SEC:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcTime.Seconds++;
-					if(rtcTime.Hours>59)rtcTime.Seconds = 0;
-					HAL_RTC_SetTime(&hrtc,&rtcTime,RTC_FORMAT_BIN);
+					RTC_TimeTypeDef	*rtcTime = RTC_GetRTCTime();
+					rtcTime->Seconds++;
+					RTC_SetTime(rtcTime);
 				}
 			}break;
 			
 			case SYS_SET_DAY:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcDate.Date++;
-					if(rtcDate.Date>31)rtcDate.Date = 1;
-					HAL_RTC_SetDate(&hrtc,&rtcDate,RTC_FORMAT_BIN);
+					RTC_DateTypeDef	*rtcDate = RTC_GetRTCDate();
+					rtcDate->Date++;
+					RTC_SetDate(rtcDate);
 				}
 			}break;
 			
 			case SYS_SET_MONTH:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcDate.Month++;
-					if(rtcDate.Month>12)rtcDate.Month = 1;
-					HAL_RTC_SetDate(&hrtc,&rtcDate,RTC_FORMAT_BIN);
+					RTC_DateTypeDef	*rtcDate = RTC_GetRTCDate();
+					rtcDate->Month++;
+					RTC_SetDate(rtcDate);
 				}
 			}break;
 			
 			case SYS_SET_YEAR:
 			{
 				if(btnPressCnt > LO_PRESS_TIME & btnPressCnt < HI_PRESS_TIME){
-					rtcDate.Year++;
-					if(rtcDate.Year>99)rtcDate.Year = 0;
-					HAL_RTC_SetDate(&hrtc,&rtcDate,RTC_FORMAT_BIN);
+					RTC_DateTypeDef	*rtcDate = RTC_GetRTCDate();
+					rtcDate->Year++;
+					RTC_SetDate(rtcDate);
 				}
 			}break;
 		}
@@ -248,25 +229,7 @@ void System_Process(void const * argument)
 			//HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
 }
 
-void	System_GetDateTimeFromRTC()
-{
-	HAL_RTC_GetTime(&hrtc,&rtcTime,RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc,&rtcDate, RTC_FORMAT_BIN);
-}
 
-RTC_TimeTypeDef *System_GetRTCTime()
-{
-	System_GetDateTimeFromRTC();
-	
-	return &rtcTime;
-}
-
-RTC_DateTypeDef *System_GetRTCDate()
-{
-	System_GetDateTimeFromRTC();
-	
-	return &rtcDate;	
-}
 
 void System_SetState(eSystemState State)
 {
