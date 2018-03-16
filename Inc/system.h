@@ -1,7 +1,7 @@
 #ifndef _SYSTEM_H
 #define _SYSTEM_H
 
-#include "stm32f4xx_hal.h"
+#include "stm32l0xx_hal.h"
 
 #define SLEEP_VALUE 100000
 #define LO_PRESS_TIME	10
@@ -35,7 +35,7 @@ typedef enum
 
 
 void System_Init(void);
-void System_Process(void);
+void System_Process(void const * argument);
 void System_SetState(eSystemState State);
 void System_SetSettingsState(eSettingsState State);
 

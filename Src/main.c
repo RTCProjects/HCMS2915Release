@@ -52,11 +52,11 @@
 
 /* USER CODE BEGIN Includes */
 #include "hcms2915.h"
+#include "system.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc;
-RTC_HandleTypeDef hrtc;
 SPI_HandleTypeDef hspi1;
 osThreadId defaultTaskHandle;
 
@@ -70,7 +70,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC_Init(void);
-static void MX_RTC_Init(void);
+//static void MX_RTC_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -113,7 +113,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_ADC_Init();
-  MX_RTC_Init();
+//  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -267,15 +267,13 @@ static void MX_ADC_Init(void)
 
 }
 
-/* RTC init function */
+/* RTC init function 
 static void MX_RTC_Init(void)
 {
 
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;
 
-    /**Initialize RTC Only 
-    */
   hrtc.Instance = RTC;
 if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
@@ -290,8 +288,7 @@ if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Initialize RTC and set the Time and Date 
-    */
+
   sTime.Hours = 0x0;
   sTime.Minutes = 0x0;
   sTime.Seconds = 0x0;
@@ -315,7 +312,7 @@ if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
     HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
   }
 
-}
+}*/
 
 /* SPI1 init function */
 static void MX_SPI1_Init(void)
@@ -397,6 +394,7 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
 	
 	HCMS_Init();
+	System_Init();
   /* Infinite loop */
   for(;;)
   {

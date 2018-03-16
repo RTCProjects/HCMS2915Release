@@ -1,7 +1,8 @@
 #include "system.h"
-#include "graphic.h"
-#include "settings.h"
+//#include "graphic.h"
+//#include "settings.h"
 #include "hcms2915.h"
+#include "cmsis_os.h"
 
 RTC_HandleTypeDef hrtc;
 
@@ -16,19 +17,26 @@ uint32_t	sleepCounter;
 
 void	System_GetDateTimeFromRTC(void);
 
+osThreadId systemTaskHandle;
+
 void System_Init()
 {
-	//RTC Init
-	hrtc.Instance = RTC;
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 127;
-  hrtc.Init.SynchPrediv = 255;
-  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
+  hrtc.Instance = RTC;
+	
+	if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2)
+	{
+		hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+		hrtc.Init.AsynchPrediv = 127;
+		hrtc.Init.SynchPrediv = 255;
+		hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+		hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+		hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+		hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+		if (HAL_RTC_Init(&hrtc) != HAL_OK)
+		{
+			_Error_Handler(__FILE__, __LINE__);
+		}
+    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
   }
 	
 	eCurrentSysState = SYS_TIME;
@@ -37,9 +45,12 @@ void System_Init()
 	sleepCounter = 0;
 	btnPressCnt = 0;
 	btnPressState = 0;
+	
+	osThreadDef(systemTask, System_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x100);
+  systemTaskHandle = osThreadCreate(osThread(systemTask), NULL);
 }
 
-void System_Process()
+void System_Process(void const * argument)
 {
 	GPIO_PinState pinState = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13);
 	
