@@ -3,11 +3,11 @@
 "frm_release\main.o"
 "frm_release\hcms2915.o"
 "frm_release\system.o"
-"frm_release\rtc.o"
 "frm_release\stm32l0xx_it.o"
 "frm_release\stm32l0xx_hal_msp.o"
 "frm_release\stm32l0xx_hal_timebase_tim.o"
 "frm_release\freertos.o"
+"frm_release\graphic.o"
 "frm_release\system_stm32l0xx.o"
 "frm_release\stm32l0xx_hal_pwr_ex.o"
 "frm_release\stm32l0xx_hal_pwr.o"
@@ -39,6 +39,6 @@
 "frm_release\event_groups.o"
 "frm_release\tasks.o"
 --library_type=microlib --strict --scatter "frm_release\frm_release.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "frm_release.map" -o frm_release\frm_release.axf

@@ -1,7 +1,7 @@
 #include "graphic.h"
 #include "system.h"
 #include "hcms2915.h"
-#include "settings.h"
+ #include "cmsis_os.h"
 
 static RTC_TimeTypeDef	*currentTime;
 static RTC_DateTypeDef	*currentDate;
@@ -16,12 +16,17 @@ const char	*strDays[] = {"Ïí","Âò","Ñð","×ò","Ïò","Ñá","Âñ"};
 
 uint32_t	uSettingScrollCnt;
 
+osThreadId graphicsTaskHandle;
+
 void Graphic_Init()
 {
 	uSettingScrollCnt = 0;
+	
+	osThreadDef(graphicsTask, Graphic_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x100);
+  graphicsTaskHandle = osThreadCreate(osThread(graphicsTask), NULL);
 }
 
-void Graphic_Process()
+void Graphic_Process(void const * argument)
 {
 
 	eSystemState	currensSysState = System_GetState();
@@ -59,7 +64,7 @@ void Graphic_Process()
 				case SELECT_DEFAULT: 	HCMS_PutStr((char*)strSettingsText); break;
 				case SELECT_BRIGHT: 	
 				{
-					sprintf(strOutBuf,"%s%3d%%",strBrightText,Settigns.uPWMBrightness);
+					sprintf(strOutBuf,"%s%3d%%",strBrightText,/*Settigns.uPWMBrightness*/10);
 					HCMS_PutStr((char*)strOutBuf);
 				}break;
 				case SELECT_TIME: 		HCMS_PutStr((char*)strTimeText); 		 break;

@@ -1,7 +1,7 @@
 #ifndef _SETTINGS_H
 #define _SETTINGS_H
 
-#include "stm32f4xx_hal.h"
+#include "stm32l0xx_hal.h"
 
 typedef struct
 {
