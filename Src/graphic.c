@@ -39,7 +39,7 @@ void Graphic_Process()
 		if (currensSysState == SYS_TIME || currensSysState == SYS_SET_HOUR || currensSysState == SYS_SET_MIN || currensSysState == SYS_SET_SEC)
 		{
 			currentTime = System_GetRTCTime();
-			if(currentTime->SubSeconds % 2)
+			if(currentTime->SubSeconds < 0x7F)
 				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);
 			else
 				sprintf(strOutBuf, "%02d %02d %02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);

@@ -12,6 +12,7 @@ static RTC_DateTypeDef	rtcDate;
 static eSystemState			eCurrentSysState;
 static eSettingsState		eCurrentSettingsState;
 
+extern ADC_HandleTypeDef hadc;
 
 uint16_t		btnPressCnt;
 uint16_t		btnPressState;
@@ -19,8 +20,8 @@ uint32_t		sleepCounter;
 
 void	System_GetDateTimeFromRTC(void);
 
-osThreadId systemTaskHandle;
-
+__IO static uint32_t uwADCxConvertedValue;
+	__IO float fVoltage = 0;
 void System_Init()
 {	
 	hrtc.Instance = RTC;
@@ -41,6 +42,8 @@ void System_Init()
 	sleepCounter = 0;
 	btnPressCnt = 0;
 	btnPressState = 0;
+	
+	uwADCxConvertedValue = 0;
 }
 
 void System_Process()
@@ -233,16 +236,32 @@ void System_Process()
 		btnPressState = 0;
 	}
 		
-
-
+	System_ADCVoltage();
+/*
 	  sleepCounter++;
 		if(sleepCounter > SLEEP_VALUE)
 			System_EnterStandBy();
+*/
+}
 
+void System_ADCVoltage()
+{
+
+	
+	HAL_ADC_Start(&hadc);
+	HAL_ADC_PollForConversion(&hadc, 10);
+  if ((HAL_ADC_GetState(&hadc) & HAL_ADC_STATE_REG_EOC) == HAL_ADC_STATE_REG_EOC)
+  {
+  uwADCxConvertedValue = HAL_ADC_GetValue(&hadc);
+		
+		fVoltage = uwADCxConvertedValue * 0.001304347826087;
+  }
 }
 
 void System_EnterStandBy()
 {
+	HCMS_On(1);
+	osDelay(500);	
 	HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN1);
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);	
 	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);

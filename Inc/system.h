@@ -39,7 +39,7 @@ void System_Process(void);
 void System_SetState(eSystemState State);
 void System_SetSettingsState(eSettingsState State);
 void System_EnterStandBy(void);
-
+void System_ADCVoltage(void);
 
 RTC_TimeTypeDef *System_GetRTCTime(void);
 RTC_DateTypeDef *System_GetRTCDate(void);

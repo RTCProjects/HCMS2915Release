@@ -151,6 +151,11 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
+          <ItemText>fVoltage</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
           <ItemText>uwADCxConvertedValue,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
