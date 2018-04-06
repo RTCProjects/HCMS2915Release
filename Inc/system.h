@@ -3,9 +3,9 @@
 
 #include "stm32l0xx_hal.h"
 
-#define SLEEP_VALUE 100000
-#define LO_PRESS_TIME	10
-#define HI_PRESS_TIME 200
+#define SLEEP_VALUE 	5000
+#define LO_PRESS_TIME	100
+#define HI_PRESS_TIME 1000
 
 typedef enum
 {
@@ -35,9 +35,11 @@ typedef enum
 
 
 void System_Init(void);
-void System_Process(void const * argument);
+void System_Process(void);
 void System_SetState(eSystemState State);
 void System_SetSettingsState(eSettingsState State);
+void System_EnterStandBy(void);
+
 
 RTC_TimeTypeDef *System_GetRTCTime(void);
 RTC_DateTypeDef *System_GetRTCDate(void);

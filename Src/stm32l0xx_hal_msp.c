@@ -74,7 +74,7 @@ void HAL_MspInit(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 3, 0);
 
   /* USER CODE BEGIN MspInit 1 */
-
+	
   /* USER CODE END MspInit 1 */
 }
 
@@ -130,14 +130,36 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 
 void HAL_RTC_MspInit(RTC_HandleTypeDef* hrtc)
 {
-
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_PeriphCLKInitTypeDef  PeriphClkInitStruct;
+	
+	
   if(hrtc->Instance==RTC)
   {
   /* USER CODE BEGIN RTC_MspInit 0 */
 
   /* USER CODE END RTC_MspInit 0 */
     /* Peripheral clock enable */
-    __HAL_RCC_RTC_ENABLE();
+	/*	__HAL_RCC_PWR_CLK_ENABLE();
+    
+		HAL_PWR_EnableBkUpAccess();
+		
+	RCC_OscInitStruct.OscillatorType =  RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_OFF;
+  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  { 
+    Error_Handler();
+  }
+  
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  if(HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+  { 
+    Error_Handler();
+  }*/
+	__HAL_RCC_RTC_ENABLE();
   /* USER CODE BEGIN RTC_MspInit 1 */
 
   /* USER CODE END RTC_MspInit 1 */

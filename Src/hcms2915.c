@@ -39,7 +39,7 @@ void	HCMS_Init()
 		HCMS_Ctrl_Register(def_ctrl_r1.byte);
 	HCMS_Ctrl_Register(def_ctrl_r0.byte);
 	
-	osThreadDef(hcmsTask, HCMS_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x100);
+	osThreadDef(hcmsTask, HCMS_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x200);
   hcms2915TaskHandle = osThreadCreate(osThread(hcmsTask), NULL);
 }
 

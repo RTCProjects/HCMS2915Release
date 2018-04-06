@@ -58,6 +58,14 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc;
+
+
+/* ADC channel configuration structure declaration */
+ADC_ChannelConfTypeDef        sConfig;
+
+/* Variable used to get converted value */
+__IO uint32_t uwADCxConvertedValue = 0;
+
 SPI_HandleTypeDef hspi1;
 osThreadId defaultTaskHandle;
 
@@ -133,7 +141,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE );
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -147,27 +155,19 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
-  
-  /* We should never get here as control is now taken by the scheduler */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-
-  /* USER CODE END WHILE */
-
-  /* USER CODE BEGIN 3 */
-
-  }
-  /* USER CODE END 3 */
+ 
 
 }
+void SystemPower_Config(void)
+{
+	  __HAL_RCC_PWR_CLK_ENABLE();
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+  HAL_PWREx_EnableUltraLowPower();
+
+  /* Enable the fast wake up from Ultra low power mode */
+  HAL_PWREx_EnableFastWakeUp();
+}
+
 void SystemClock_Config(void)
 {
 
@@ -178,13 +178,15 @@ void SystemClock_Config(void)
     /**Configure the main internal regulator output voltage 
     */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	
+	__HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+	RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_4;
@@ -209,12 +211,14 @@ void SystemClock_Config(void)
   }
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
+	HAL_RCC_MCOConfig(RCC_MCO1, RCC_MCO1SOURCE_LSE, RCC_MCODIV_1);
+	
+	HAL_RCCEx_EnableLSECSS();
     /**Configure the Systick interrupt time 
     */
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
@@ -225,6 +229,8 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 3, 0);
+	
+	SystemPower_Config();
 }
 
 /* ADC init function */
@@ -264,6 +270,12 @@ static void MX_ADC_Init(void)
   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
+  }
+	
+	if (HAL_ADC_Start(&hadc) != HAL_OK)
+  {
+    /* Start Conversation Error */
+    Error_Handler();
   }
 
 }
@@ -374,6 +386,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BAT_STAT_GPIO_Port, &GPIO_InitStruct);
+	
+	GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	
+	
+	
 
   /*Configure GPIO pin : LCD_RESET_Pin */
   GPIO_InitStruct.Pin = LCD_RESET_Pin;
@@ -395,12 +415,43 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
 	
 	HCMS_Init();
+	
 	System_Init();
 	Graphic_Init();
   /* Infinite loop */
+	
+	  /* Check and handle if the system was resumed from StandBy mode */ 
+  if(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
+  {
+    /* Clear Standby flag */
+    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB); 
+  }
+	
   for(;;)
   {
-    osDelay(1);
+		System_Process();
+		Graphic_Process();
+		
+		osDelay(1);
+    /*osDelay(2000);
+		
+		  HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN1);
+
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		
+		
+		HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
+		
+		HAL_PWR_EnterSTANDBYMode();
+		*/
+		/*HAL_ADC_PollForConversion(&hadc, 10);
+  
+    if ((HAL_ADC_GetState(&hadc) & HAL_ADC_STATE_REG_EOC) == HAL_ADC_STATE_REG_EOC)
+    {
+			
+
+      uwADCxConvertedValue = HAL_ADC_GetValue(&hadc);
+    }*/
   }
   /* USER CODE END 5 */ 
 }

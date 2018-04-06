@@ -5,6 +5,6 @@
 
 
 void 	Graphic_Init(void);
-void Graphic_Process(void const * argument);
+void 	Graphic_Process(void);
 void	Graphic_ResetSettingsScroll(void);
 #endif

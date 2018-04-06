@@ -13,9 +13,9 @@ static eSystemState			eCurrentSysState;
 static eSettingsState		eCurrentSettingsState;
 
 
-uint8_t		btnPressCnt;
-uint8_t		btnPressState;
-uint32_t	sleepCounter;
+uint16_t		btnPressCnt;
+uint16_t		btnPressState;
+uint32_t		sleepCounter;
 
 void	System_GetDateTimeFromRTC(void);
 
@@ -41,16 +41,13 @@ void System_Init()
 	sleepCounter = 0;
 	btnPressCnt = 0;
 	btnPressState = 0;
-	
-	osThreadDef(systemTask, System_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x100);
-  systemTaskHandle = osThreadCreate(osThread(systemTask), NULL);
 }
 
-void System_Process(void const * argument)
+void System_Process()
 {
-	GPIO_PinState pinState = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13);
+	GPIO_PinState pinState = HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
 	
-	if(pinState == GPIO_PIN_RESET)//?????? ??????
+	if(pinState == GPIO_PIN_SET)//?????? ??????
 	{
 
 			switch(eCurrentSysState)
@@ -237,11 +234,19 @@ void System_Process(void const * argument)
 	}
 		
 
-	
-	  //sleepCounter++;
-		//if(sleepCounter > SLEEP_VALUE)
-			//HAL_PWR_EnterSTANDBYMode();
-			//HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+
+	  sleepCounter++;
+		if(sleepCounter > SLEEP_VALUE)
+			System_EnterStandBy();
+
+}
+
+void System_EnterStandBy()
+{
+	HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN1);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);	
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
+	HAL_PWR_EnterSTANDBYMode();
 }
 
  void	System_GetDateTimeFromRTC()

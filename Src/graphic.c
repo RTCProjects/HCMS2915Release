@@ -21,13 +21,13 @@ osThreadId graphicsTaskHandle;
 void Graphic_Init()
 {
 	uSettingScrollCnt = 0;
-	
-	osThreadDef(graphicsTask, Graphic_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x100);
-  graphicsTaskHandle = osThreadCreate(osThread(graphicsTask), NULL);
 }
 
-void Graphic_Process(void const * argument)
+void Graphic_Process()
 {
+	
+	//while(1)
+	{
 
 	eSystemState	currensSysState = System_GetState();
 	char strOutBuf[8];
@@ -39,7 +39,7 @@ void Graphic_Process(void const * argument)
 		if (currensSysState == SYS_TIME || currensSysState == SYS_SET_HOUR || currensSysState == SYS_SET_MIN || currensSysState == SYS_SET_SEC)
 		{
 			currentTime = System_GetRTCTime();
-			if(currentTime->Seconds % 2)
+			if(currentTime->SubSeconds % 2)
 				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);
 			else
 				sprintf(strOutBuf, "%02d %02d %02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);
@@ -94,6 +94,8 @@ void Graphic_Process(void const * argument)
 		
 		
 
+	}
+	
 	}
 }
 void	Graphic_ResetSettingsScroll()
