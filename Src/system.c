@@ -237,11 +237,11 @@ void System_Process()
 	}
 		
 	System_ADCVoltage();
-/*
+
 	  sleepCounter++;
 		if(sleepCounter > SLEEP_VALUE)
-			System_EnterStandBy();
-*/
+			System_EnterStandBy();  
+
 }
 
 void System_ADCVoltage()
