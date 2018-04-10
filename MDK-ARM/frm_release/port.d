@@ -1,7 +1,7 @@
 frm_release\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0/port.c
 frm_release\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-frm_release\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-frm_release\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+frm_release\port.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stddef.h
+frm_release\port.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stdint.h
 frm_release\port.o: ../Inc/FreeRTOSConfig.h
 frm_release\port.o: ../Inc/main.h
 frm_release\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

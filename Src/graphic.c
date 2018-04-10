@@ -12,15 +12,18 @@ const char  *strTimeText		 = "”ÒÚ¬ÂÏˇ";
 const char  *strDateText		 = "”ÒÚƒ‡Ú‡";
 const char	*strExitText		 = "¬˚ıÓ‰";
 
-const char	*strDays[] = {"œÌ","¬Ú","—","◊Ú","œÚ","—·","¬Ò"};
+const char	*strDays[] = {"","œÌ","¬Ú","—","◊Ú","œÚ","—·","¬Ò"};
 
 uint32_t	uSettingScrollCnt;
+
+uint8_t	uChangeFlag;
 
 osThreadId graphicsTaskHandle;
 
 void Graphic_Init()
 {
 	uSettingScrollCnt = 0;
+	uChangeFlag = 0;
 }
 
 void Graphic_Process()
@@ -33,17 +36,31 @@ void Graphic_Process()
 	char strOutBuf[8];
 	
 	HCMS_Clear();
-	
-	//switch(System_GetState())
-	{
-		if (currensSysState == SYS_TIME || currensSysState == SYS_SET_HOUR || currensSysState == SYS_SET_MIN || currensSysState == SYS_SET_SEC)
+
+		
+		if (currensSysState == SYS_TIME || currensSysState == SYS_SET_HOUR || currensSysState == SYS_SET_MIN || currensSysState == SYS_SET_WEEK)
 		{
-			currentTime = System_GetRTCTime();
-			if(currentTime->SubSeconds < 0x7F)
-				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);
+			if(System_GetChargeState() == CHARGE_ON)
+			{
+				HCMS_PutStr("Charging");
+			}
 			else
-				sprintf(strOutBuf, "%02d %02d %02d", currentTime->Hours,currentTime->Minutes,currentTime->Seconds);
-			HCMS_PutStr(strOutBuf);
+			{
+				char strDay[2];
+				
+				currentTime = System_GetRTCTime();
+				currentDate = System_GetRTCDate();
+				
+				if(uChangeFlag)sprintf(strDay,"%s",strDays[currentDate->WeekDay]);
+				else sprintf(strDay,"%d",currentDate->Date);
+				
+				if(currentTime->SubSeconds < 0x7F)
+					sprintf(strOutBuf, "%02d:%02d %s", currentTime->Hours,currentTime->Minutes,strDay);
+				else
+					sprintf(strOutBuf, "%02d %02d %s", currentTime->Hours,currentTime->Minutes,strDay);
+				HCMS_PutStr(strOutBuf);
+				
+			}
 		}
 		
 		if (currensSysState == SYS_DATE || currensSysState == SYS_SET_DAY || currensSysState == SYS_SET_MONTH || currensSysState == SYS_SET_YEAR)
@@ -73,32 +90,17 @@ void Graphic_Process()
 			}
 
 		}
-		/*
-		case SYS_SET_HOUR:
-		{		
-				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime.Hours,currentTime.Minutes,currentTime.Seconds);
-				HCMS_PutStr((char*)"ıÛÈ");
-		}break;
-		
-		case SYS_SET_MIN:
-		{				
-				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime.Hours,currentTime.Minutes,currentTime.Seconds);
-				HCMS_PutStr((char*)"ÒÛÈ");
-		}break;
-		
-		case SYS_SET_SEC:
-		{			
-				sprintf(strOutBuf, "%02d:%02d:%02d", currentTime.Hours,currentTime.Minutes,currentTime.Seconds);
-				HCMS_PutStr((char*)"ÚÛ‰‡");
-		}break;*/
-		
-		
 
-	}
 	
 	}
 }
 void	Graphic_ResetSettingsScroll()
 {
 	uSettingScrollCnt = 0;
+}
+
+void 	Graphic_ScrollChangeCallback()
+{
+	if(uChangeFlag){uChangeFlag = 0;return;}
+	if(!uChangeFlag){uChangeFlag = 1;return;}
 }

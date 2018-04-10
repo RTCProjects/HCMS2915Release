@@ -14,6 +14,11 @@
 #define 	FONT_COLS		5
 #define		SCR_SIZE		40
 
+#define 	SHIFT_SIZE	7
+#define 	STOP_TIME		20
+#define 	BLINK_ON_TIME	6
+#define		BLINK_OFF_TIME -2
+
 #define		CHIP_RAW_SIZE	(CHIP_CNT*CHIP_POS*FONT_COLS)
 
 typedef enum{				// real pwm
@@ -52,7 +57,8 @@ typedef enum{
 	EFFECT_OFF,
 	BLINK_R1,
 	BLINK_R2,
-	BLINK_R3
+	BLINK_R3,
+	SCROLL_R3
 }eEffectType;
 
 typedef union{
@@ -60,8 +66,9 @@ typedef union{
 		uint8_t	r1_blink : 1;
 		uint8_t	r2_blink : 1;
 		uint8_t	r3_blink : 1;
+		uint8_t	r3_scroll : 1;
 		
-		uint8_t	reserved : 5;
+		uint8_t	reserved : 4;
 	};
 	uint8_t	mode_byte;
 }tEffectMode;

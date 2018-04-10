@@ -3,7 +3,8 @@
 
 #include "stm32l0xx_hal.h"
 
-#define SLEEP_VALUE 	5000
+#define DATE_SHOW_VALUE		2500
+#define SLEEP_MODE_VALUE 	5000
 #define LO_PRESS_TIME	100
 #define HI_PRESS_TIME 1000
 
@@ -14,10 +15,11 @@ typedef enum
 	SYS_SETTINGS	 = 0x03,
 	SYS_SET_HOUR	= 0x04,
 	SYS_SET_MIN = 0x05,
-	SYS_SET_SEC = 0x06,
+	SYS_SET_WEEK = 0x06,
 	SYS_SET_DAY = 0x07,
 	SYS_SET_MONTH = 0x08,
-	SYS_SET_YEAR = 0x09
+	SYS_SET_YEAR = 0x09,
+	SYS_CHARGE 
 }eSystemState;
 
 typedef enum
@@ -29,6 +31,12 @@ typedef enum
 	SELECT_EXIT 		= 0x04
 
 }eSettingsState;
+
+typedef enum
+{
+	CHARGE_OFF = 0x00,
+	CHARGE_ON = 0x01
+}eChargeState;
 
 #define FIRST_SETTING SELECT_BRIGHT
 #define LAST_SETTING 	SELECT_EXIT
@@ -44,7 +52,7 @@ void System_ADCVoltage(void);
 RTC_TimeTypeDef *System_GetRTCTime(void);
 RTC_DateTypeDef *System_GetRTCDate(void);
 
-eSystemState	System_GetState(void);
+eSystemState		System_GetState(void);
 eSettingsState	System_GetSettingsState(void);
-
+eChargeState		System_GetChargeState(void);
 #endif

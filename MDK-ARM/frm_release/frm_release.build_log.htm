@@ -3,51 +3,128 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: µVision V5.17.0.0
-Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Ben Áîðèñ, Home, LIC=LJWMM-X4NW6-HQJ0I-T27ZK-2TW5R-EB3XN
+IDE-Version: µVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 1, 1, LIC=8MZ8T-RCV7F-GNKA5-G1NEZ-8NH0B-D6AEA
  
 Tool Versions:
-Toolchain:       MDK-ARM Professional  Version: 5.17
-Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 1 (build 61)
-Assembler:       Armasm.exe V5.06 update 1 (build 61)
-Linker/Locator:  ArmLink.exe V5.06 update 1 (build 61)
-Library Manager: ArmAr.exe V5.06 update 1 (build 61)
-Hex Converter:   FromElf.exe V5.06 update 1 (build 61)
-CPU DLL:         SARMCM3.DLL V5.17
-Dialog DLL:      DARMCM1.DLL V1.12.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
-Dialog DLL:      TARMCM1.DLL V1.9.0.0
+Toolchain:       MDK-ARM Professional  Version: 5.24.1
+Toolchain Path:  C:\Keil_v521A\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DARMCM1.DLL V1.18.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TARMCM1.DLL V1.13.0.0
  
 <h2>Project:</h2>
-C:\Users\Áîðèñ\Documents\eagle\HCMS-2915\test_firmware\HCMS2915Release\MDK-ARM\frm_release.uvprojx
-Project File Date:  04/09/2018
+C:\Users\ÍèêîëüñêèéÁÁ\Documents\eagle\HCMS-2915\firmware\HCMS2915Release\MDK-ARM\frm_release.uvprojx
+Project File Date:  04/10/2018
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v521A\ARM\ARMCC\Bin'
 Build target 'frm_release'
-compiling system.c...
-linking...
-Program Size: Code=13016 RO-data=1164 RW-data=168 ZI-data=5696  
-"frm_release\frm_release.axf" - 0 Error(s), 0 Warning(s).
+compiling flash.c...
+..\Src\flash.c(42): error:  #20: identifier "FLASH_TYPEPROGRAM_BYTE" is undefined
+  				if( HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE,address + addr_counter , *(pData + (addr_counter - 4))) == HAL_OK)
+..\Src\flash.c(70): error:  #20: identifier "FLASH_TYPEERASE_SECTORS" is undefined
+  			EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
+..\Src\flash.c(71): error:  #136: struct "<unnamed>"  has no field "VoltageRange"
+  			EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+..\Src\flash.c(71): error:  #20: identifier "FLASH_VOLTAGE_RANGE_3" is undefined
+  			EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+..\Src\flash.c(72): error:  #136: struct "<unnamed>"  has no field "Sector"
+  			EraseInitStruct.Sector = sector;
+..\Src\flash.c(73): error:  #136: struct "<unnamed>"  has no field "NbSectors"
+  			EraseInitStruct.NbSectors = 1;
+..\Src\flash.c(82): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_DISABLE" declared implicitly
+  	  __HAL_FLASH_DATA_CACHE_DISABLE();
+..\Src\flash.c(83): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_DISABLE" declared implicitly
+    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
+..\Src\flash.c(85): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_RESET" declared implicitly
+    __HAL_FLASH_DATA_CACHE_RESET();
+..\Src\flash.c(86): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_RESET" declared implicitly
+    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
+..\Src\flash.c(88): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_ENABLE" declared implicitly
+    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
+..\Src\flash.c(89): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_ENABLE" declared implicitly
+    __HAL_FLASH_DATA_CACHE_ENABLE();
+..\Src\flash.c(100): error:  #20: identifier "FLASH_TYPEPROGRAM_BYTE" is undefined
+  		HAL_StatusTypeDef status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, address, data);
+..\Src\flash.c(111): error:  #20: identifier "FLASH_TYPEPROGRAM_HALFWORD" is undefined
+  		HAL_StatusTypeDef status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, address, data);
+..\Src\flash.c(126): error:  #20: identifier "FLASH_SECTOR_0" is undefined
+      sector = FLASH_SECTOR_0;  
+..\Src\flash.c(130): error:  #20: identifier "FLASH_SECTOR_1" is undefined
+      sector = FLASH_SECTOR_1;  
+..\Src\flash.c(134): error:  #20: identifier "FLASH_SECTOR_2" is undefined
+      sector = FLASH_SECTOR_2;  
+..\Src\flash.c(138): error:  #20: identifier "FLASH_SECTOR_3" is undefined
+      sector = FLASH_SECTOR_3;  
+..\Src\flash.c(142): error:  #20: identifier "FLASH_SECTOR_4" is undefined
+      sector = FLASH_SECTOR_4;  
+..\Src\flash.c(146): error:  #20: identifier "FLASH_SECTOR_5" is undefined
+      sector = FLASH_SECTOR_5;  
+..\Src\flash.c(150): error:  #20: identifier "FLASH_SECTOR_6" is undefined
+      sector = FLASH_SECTOR_6;  
+..\Src\flash.c(154): error:  #20: identifier "FLASH_SECTOR_7" is undefined
+      sector = FLASH_SECTOR_7;  
+..\Src\flash.c(158): error:  #20: identifier "FLASH_SECTOR_8" is undefined
+      sector = FLASH_SECTOR_8;  
+..\Src\flash.c(162): error:  #20: identifier "FLASH_SECTOR_9" is undefined
+      sector = FLASH_SECTOR_9;  
+..\Src\flash.c(166): error:  #20: identifier "FLASH_SECTOR_10" is undefined
+      sector = FLASH_SECTOR_10;  
+..\Src\flash.c(170): error:  #20: identifier "FLASH_SECTOR_11" is undefined
+      sector = FLASH_SECTOR_11;  
+..\Src\flash.c(174): error:  #20: identifier "FLASH_SECTOR_12" is undefined
+      sector = FLASH_SECTOR_12;  
+..\Src\flash.c(178): error:  #20: identifier "FLASH_SECTOR_13" is undefined
+      sector = FLASH_SECTOR_13;  
+..\Src\flash.c(182): error:  #20: identifier "FLASH_SECTOR_14" is undefined
+      sector = FLASH_SECTOR_14;  
+..\Src\flash.c(186): error:  #20: identifier "FLASH_SECTOR_15" is undefined
+      sector = FLASH_SECTOR_15;  
+..\Src\flash.c(190): error:  #20: identifier "FLASH_SECTOR_16" is undefined
+      sector = FLASH_SECTOR_16;  
+..\Src\flash.c(194): error:  #20: identifier "FLASH_SECTOR_17" is undefined
+      sector = FLASH_SECTOR_17;  
+..\Src\flash.c(198): error:  #20: identifier "FLASH_SECTOR_18" is undefined
+      sector = FLASH_SECTOR_18;  
+..\Src\flash.c(202): error:  #20: identifier "FLASH_SECTOR_19" is undefined
+      sector = FLASH_SECTOR_19;  
+..\Src\flash.c(206): error:  #20: identifier "FLASH_SECTOR_20" is undefined
+      sector = FLASH_SECTOR_20;  
+..\Src\flash.c(210): error:  #20: identifier "FLASH_SECTOR_21" is undefined
+      sector = FLASH_SECTOR_21;  
+..\Src\flash.c: 6 warnings, 30 errors
+"frm_release\frm_release.axf" - 30 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
-                ARM::CMSIS:CORE:4.3.0
+                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
+                ARM.CMSIS.5.0.1
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 4.3.0
+   * Component: CORE Version: 5.0.1
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32L0xx_DFP.2.0.0.pack
+                Keil.STM32L0xx_DFP.2.0.0
+                STMicroelectronics STM32L0 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
-  C:\Users\Áîðèñ\Documents\eagle\HCMS-2915\test_firmware\HCMS2915Release\MDK-ARM\RTE
-  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
-  C:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\1.4.0\Device\Include
+  .\RTE\_frm_release
+  C:\Keil_v521A\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
+  C:\Keil_v521A\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:4.3.0
+   * Component: ARM::CMSIS:CORE:5.0.1
+Target not created.
 Build Time Elapsed:  00:00:02
 </pre>
 </body>

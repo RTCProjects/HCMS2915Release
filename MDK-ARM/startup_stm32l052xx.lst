@@ -383,18 +383,11 @@ ARM Macro Assembler    Page 6
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=inter
 work --depend=frm_release\startup_stm32l052xx.d -ofrm_release\startup_stm32l052
-xx.o -I..\Inc -IC:\Users\Борис\Documents\eagle\HCMS-2915\test_firmware\HCMS2915
-Release\MDK-ARM\RTE -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Ke
-il_v5\ARM\PACK\Keil\STM32L0xx_DFP\1.4.0\Device\Include --predefine="__MICROLIB 
-SETA 1" --predefine="__UVISION_VERSION SETA 517" --predefine="_RTE_ SETA 1" --p
-redefine="STM32L052xx SETA 1" --list=startup_stm32l052xx.lst startup_stm32l052x
-
-
-
-ARM Macro Assembler    Page 7 
-
-
-x.s
+xx.o -I..\Inc -I.\RTE\_frm_release -IC:\Keil_v521A\ARM\PACK\ARM\CMSIS\5.0.1\CMS
+IS\Include -IC:\Keil_v521A\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Devi
+ce\ST\STM32L0xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_
+VERSION SETA 524" --predefine="_RTE_ SETA 1" --predefine="STM32L052xx SETA 1" -
+-list=startup_stm32l052xx.lst startup_stm32l052xx.s
 
 
 

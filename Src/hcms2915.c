@@ -1,4 +1,5 @@
 #include "hcms2915.h"
+#include "graphic.h"
 #include "cmsis_os.h"
 
 char hcms_screen[SCR_SIZE];
@@ -7,10 +8,9 @@ static ctrl_reg0_t def_ctrl_r0;
 static ctrl_reg1_t def_ctrl_r1;
 static tEffectMode	effectMode;
 
-int8_t	scroll_x = 0;
-int8_t	scroll_y = 0;
-int8_t	blink = 0; 
- 
+int8_t	uScrollY = 0;
+int8_t	uBlink = 0; 
+uint8_t	uWaitCnt = 10;
 osThreadId hcms2915TaskHandle;
  
 void	HCMS_Init()
@@ -18,6 +18,7 @@ void	HCMS_Init()
 	effectMode.r1_blink = 0;
 	effectMode.r2_blink = 0;
 	effectMode.r3_blink = 0;
+	effectMode.r3_scroll = 1;
 	
 
 	def_ctrl_r0.brightness = DEFAULT_BRIGHTNESS;
@@ -30,7 +31,8 @@ void	HCMS_Init()
 	def_ctrl_r1.reserved = 0;
 	def_ctrl_r1.reg = 1;
 	
-	blink = 0;
+	uBlink = 0;
+	uWaitCnt = 0;
 	
 	HCMS_Reset();
 	HCMS_CtrlMode();
@@ -39,8 +41,12 @@ void	HCMS_Init()
 		HCMS_Ctrl_Register(def_ctrl_r1.byte);
 	HCMS_Ctrl_Register(def_ctrl_r0.byte);
 	
+
+	
 	osThreadDef(hcmsTask, HCMS_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x200);
   hcms2915TaskHandle = osThreadCreate(osThread(hcmsTask), NULL);
+	
+	
 }
 
 void HCMS_Reset()
@@ -82,29 +88,34 @@ void HCMS_Put_Byte(uint8_t	outByte)
 	hStatus = HAL_SPI_Transmit(&hspi1,(uint8_t*)&outByte,sizeof(uint8_t),100);
 }
 
+
+
 void HCMS_RawPixels(uint8_t *buf, int sz)
 {
-	blink++;
-	if(blink > 6)blink = -2;
-	//scroll_x++;
-	if(scroll_x > 7)scroll_x = -7;
+	uBlink++;
+	if(uBlink > BLINK_ON_TIME)uBlink = BLINK_OFF_TIME;
+		
+	
+	
+	if(uWaitCnt >= STOP_TIME){	
+		uScrollY--;
+		if(uScrollY < -SHIFT_SIZE){
+			Graphic_ScrollChangeCallback();
+			uScrollY = SHIFT_SIZE;
+		}
+		if(uScrollY == 0)uWaitCnt = 0;
+		
+	}
+	else
+		uWaitCnt++;
 	
 	HCMS_DataMode();
 	HCMS_Enable();
 	for(int i=0; i < sz; i++)
 	{
-		/*
-		if(i>=30){
-			if(scroll_x < 0)
-				HCMS_Put_Byte(buf[i]<< (-scroll_x));
-			else
-				HCMS_Put_Byte(buf[i]>>scroll_x);
-		}
-		else
-			HCMS_Put_Byte(buf[i]);*/
 		if(effectMode.r1_blink){
 			if(i<=10){
-				if(blink > 0)HCMS_Put_Byte(buf[i]);
+				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
 				else HCMS_Put_Byte(0);				
 			}
 			else{
@@ -113,7 +124,7 @@ void HCMS_RawPixels(uint8_t *buf, int sz)
 		}
 		else if(effectMode.r2_blink){
 			if(i>=15 && i<=25){
-				if(blink > 0)HCMS_Put_Byte(buf[i]);
+				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
 				else HCMS_Put_Byte(0);				
 			}
 			else{
@@ -122,12 +133,25 @@ void HCMS_RawPixels(uint8_t *buf, int sz)
 		}
 		else if(effectMode.r3_blink){
 			if(i>=30){
-				if(blink > 0)HCMS_Put_Byte(buf[i]);
+				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
 				else HCMS_Put_Byte(0);				
 			}
 			else{
 				HCMS_Put_Byte(buf[i]);
 			}			
+		}
+		else if(effectMode.r3_scroll){
+			if(i>=30){
+				
+				if(uScrollY >= -7 && uScrollY <=7){
+				if(uScrollY < 0)
+					HCMS_Put_Byte(buf[i]<< (-uScrollY));
+				else
+					HCMS_Put_Byte(buf[i]>> uScrollY );
+				}
+			}
+			else
+				HCMS_Put_Byte(buf[i]);
 		}
 		else
 			HCMS_Put_Byte(buf[i]);
@@ -199,6 +223,11 @@ void HCMS_Effect(eEffectType eEffect)
 		case BLINK_R3:{
 			effectMode.mode_byte = 0;
 			effectMode.r3_blink = 1;
+		}break;
+		
+		case SCROLL_R3:{
+			effectMode.mode_byte = 0;
+			effectMode.r3_scroll = 1;
 		}break;
 	}
 }

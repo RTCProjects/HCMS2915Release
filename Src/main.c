@@ -160,10 +160,9 @@ int main(void)
 }
 void SystemPower_Config(void)
 {
-	  __HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_RCC_PWR_CLK_ENABLE();
 
   HAL_PWREx_EnableUltraLowPower();
-
   /* Enable the fast wake up from Ultra low power mode */
   HAL_PWREx_EnableFastWakeUp();
 }
@@ -384,7 +383,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : BAT_STAT_Pin */
   GPIO_InitStruct.Pin = BAT_STAT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BAT_STAT_GPIO_Port, &GPIO_InitStruct);
 	
 	GPIO_InitStruct.Pin = GPIO_PIN_0;
@@ -392,9 +391,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	
-	
-	
-
   /*Configure GPIO pin : LCD_RESET_Pin */
   GPIO_InitStruct.Pin = LCD_RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -433,25 +429,6 @@ void StartDefaultTask(void const * argument)
 		Graphic_Process();
 		
 		osDelay(1);
-    /*osDelay(2000);
-		
-		  HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN1);
-
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		
-		
-		HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
-		
-		HAL_PWR_EnterSTANDBYMode();
-		*/
-		/*HAL_ADC_PollForConversion(&hadc, 10);
-  
-    if ((HAL_ADC_GetState(&hadc) & HAL_ADC_STATE_REG_EOC) == HAL_ADC_STATE_REG_EOC)
-    {
-			
-
-      uwADCxConvertedValue = HAL_ADC_GetValue(&hadc);
-    }*/
   }
   /* USER CODE END 5 */ 
 }
