@@ -35,3 +35,4 @@ frm_release\flash.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_rtc_ex.h
 frm_release\flash.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_spi.h
 frm_release\flash.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim.h
 frm_release\flash.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim_ex.h
+frm_release\flash.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\string.h

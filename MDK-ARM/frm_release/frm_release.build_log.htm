@@ -22,86 +22,15 @@ Dialog DLL:      TARMCM1.DLL V1.13.0.0
  
 <h2>Project:</h2>
 C:\Users\НикольскийББ\Documents\eagle\HCMS-2915\firmware\HCMS2915Release\MDK-ARM\frm_release.uvprojx
-Project File Date:  04/10/2018
+Project File Date:  04/11/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v521A\ARM\ARMCC\Bin'
 Build target 'frm_release'
-compiling flash.c...
-..\Src\flash.c(42): error:  #20: identifier "FLASH_TYPEPROGRAM_BYTE" is undefined
-  				if( HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE,address + addr_counter , *(pData + (addr_counter - 4))) == HAL_OK)
-..\Src\flash.c(70): error:  #20: identifier "FLASH_TYPEERASE_SECTORS" is undefined
-  			EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
-..\Src\flash.c(71): error:  #136: struct "<unnamed>"  has no field "VoltageRange"
-  			EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-..\Src\flash.c(71): error:  #20: identifier "FLASH_VOLTAGE_RANGE_3" is undefined
-  			EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
-..\Src\flash.c(72): error:  #136: struct "<unnamed>"  has no field "Sector"
-  			EraseInitStruct.Sector = sector;
-..\Src\flash.c(73): error:  #136: struct "<unnamed>"  has no field "NbSectors"
-  			EraseInitStruct.NbSectors = 1;
-..\Src\flash.c(82): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_DISABLE" declared implicitly
-  	  __HAL_FLASH_DATA_CACHE_DISABLE();
-..\Src\flash.c(83): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_DISABLE" declared implicitly
-    __HAL_FLASH_INSTRUCTION_CACHE_DISABLE();
-..\Src\flash.c(85): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_RESET" declared implicitly
-    __HAL_FLASH_DATA_CACHE_RESET();
-..\Src\flash.c(86): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_RESET" declared implicitly
-    __HAL_FLASH_INSTRUCTION_CACHE_RESET();
-..\Src\flash.c(88): warning:  #223-D: function "__HAL_FLASH_INSTRUCTION_CACHE_ENABLE" declared implicitly
-    __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-..\Src\flash.c(89): warning:  #223-D: function "__HAL_FLASH_DATA_CACHE_ENABLE" declared implicitly
-    __HAL_FLASH_DATA_CACHE_ENABLE();
-..\Src\flash.c(100): error:  #20: identifier "FLASH_TYPEPROGRAM_BYTE" is undefined
-  		HAL_StatusTypeDef status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, address, data);
-..\Src\flash.c(111): error:  #20: identifier "FLASH_TYPEPROGRAM_HALFWORD" is undefined
-  		HAL_StatusTypeDef status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, address, data);
-..\Src\flash.c(126): error:  #20: identifier "FLASH_SECTOR_0" is undefined
-      sector = FLASH_SECTOR_0;  
-..\Src\flash.c(130): error:  #20: identifier "FLASH_SECTOR_1" is undefined
-      sector = FLASH_SECTOR_1;  
-..\Src\flash.c(134): error:  #20: identifier "FLASH_SECTOR_2" is undefined
-      sector = FLASH_SECTOR_2;  
-..\Src\flash.c(138): error:  #20: identifier "FLASH_SECTOR_3" is undefined
-      sector = FLASH_SECTOR_3;  
-..\Src\flash.c(142): error:  #20: identifier "FLASH_SECTOR_4" is undefined
-      sector = FLASH_SECTOR_4;  
-..\Src\flash.c(146): error:  #20: identifier "FLASH_SECTOR_5" is undefined
-      sector = FLASH_SECTOR_5;  
-..\Src\flash.c(150): error:  #20: identifier "FLASH_SECTOR_6" is undefined
-      sector = FLASH_SECTOR_6;  
-..\Src\flash.c(154): error:  #20: identifier "FLASH_SECTOR_7" is undefined
-      sector = FLASH_SECTOR_7;  
-..\Src\flash.c(158): error:  #20: identifier "FLASH_SECTOR_8" is undefined
-      sector = FLASH_SECTOR_8;  
-..\Src\flash.c(162): error:  #20: identifier "FLASH_SECTOR_9" is undefined
-      sector = FLASH_SECTOR_9;  
-..\Src\flash.c(166): error:  #20: identifier "FLASH_SECTOR_10" is undefined
-      sector = FLASH_SECTOR_10;  
-..\Src\flash.c(170): error:  #20: identifier "FLASH_SECTOR_11" is undefined
-      sector = FLASH_SECTOR_11;  
-..\Src\flash.c(174): error:  #20: identifier "FLASH_SECTOR_12" is undefined
-      sector = FLASH_SECTOR_12;  
-..\Src\flash.c(178): error:  #20: identifier "FLASH_SECTOR_13" is undefined
-      sector = FLASH_SECTOR_13;  
-..\Src\flash.c(182): error:  #20: identifier "FLASH_SECTOR_14" is undefined
-      sector = FLASH_SECTOR_14;  
-..\Src\flash.c(186): error:  #20: identifier "FLASH_SECTOR_15" is undefined
-      sector = FLASH_SECTOR_15;  
-..\Src\flash.c(190): error:  #20: identifier "FLASH_SECTOR_16" is undefined
-      sector = FLASH_SECTOR_16;  
-..\Src\flash.c(194): error:  #20: identifier "FLASH_SECTOR_17" is undefined
-      sector = FLASH_SECTOR_17;  
-..\Src\flash.c(198): error:  #20: identifier "FLASH_SECTOR_18" is undefined
-      sector = FLASH_SECTOR_18;  
-..\Src\flash.c(202): error:  #20: identifier "FLASH_SECTOR_19" is undefined
-      sector = FLASH_SECTOR_19;  
-..\Src\flash.c(206): error:  #20: identifier "FLASH_SECTOR_20" is undefined
-      sector = FLASH_SECTOR_20;  
-..\Src\flash.c(210): error:  #20: identifier "FLASH_SECTOR_21" is undefined
-      sector = FLASH_SECTOR_21;  
-..\Src\flash.c: 6 warnings, 30 errors
-"frm_release\frm_release.axf" - 30 Error(s), 6 Warning(s).
+compiling hcms2915.c...
+linking...
+Program Size: Code=17172 RO-data=1200 RW-data=220 ZI-data=5812  
+"frm_release\frm_release.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -124,8 +53,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Target not created.
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

@@ -53,3 +53,5 @@ frm_release\hcms2915.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timer
 frm_release\hcms2915.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 frm_release\hcms2915.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 frm_release\hcms2915.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+frm_release\hcms2915.o: ../Inc/system.h
+frm_release\hcms2915.o: ../Inc/flash.h

@@ -54,14 +54,12 @@
 #include "hcms2915.h"
 #include "system.h"
 #include "graphic.h"
+#include "flash.h"
+#include "adc.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-ADC_HandleTypeDef hadc;
 
-
-/* ADC channel configuration structure declaration */
-ADC_ChannelConfTypeDef        sConfig;
 
 /* Variable used to get converted value */
 __IO uint32_t uwADCxConvertedValue = 0;
@@ -78,92 +76,28 @@ osThreadId defaultTaskHandle;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
-static void MX_ADC_Init(void);
-//static void MX_RTC_Init(void);
+
 void StartDefaultTask(void const * argument);
 
-/* USER CODE BEGIN PFP */
-/* Private function prototypes -----------------------------------------------*/
-
-/* USER CODE END PFP */
-
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  *
-  * @retval None
-  */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration----------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
+	
   SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
-  MX_ADC_Init();
-//  MX_RTC_Init();
-  /* USER CODE BEGIN 2 */
 
-  /* USER CODE END 2 */
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE );
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x200);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
- 
-
-  /* Start scheduler */
   osKernelStart();
- 
-
 }
 void SystemPower_Config(void)
 {
 	__HAL_RCC_PWR_CLK_ENABLE();
 
   HAL_PWREx_EnableUltraLowPower();
-  /* Enable the fast wake up from Ultra low power mode */
   HAL_PWREx_EnableFastWakeUp();
 }
 
@@ -232,99 +166,6 @@ void SystemClock_Config(void)
 	SystemPower_Config();
 }
 
-/* ADC init function */
-static void MX_ADC_Init(void)
-{
-
-  ADC_ChannelConfTypeDef sConfig;
-
-    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
-    */
-  hadc.Instance = ADC1;
-  hadc.Init.OversamplingMode = DISABLE;
-  hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  hadc.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc.Init.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
-  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc.Init.ContinuousConvMode = DISABLE;
-  hadc.Init.DiscontinuousConvMode = DISABLE;
-  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc.Init.DMAContinuousRequests = DISABLE;
-  hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-  hadc.Init.LowPowerAutoWait = DISABLE;
-  hadc.Init.LowPowerFrequencyMode = DISABLE;
-  hadc.Init.LowPowerAutoPowerOff = DISABLE;
-  if (HAL_ADC_Init(&hadc) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-    /**Configure for the selected ADC regular channel to be converted. 
-    */
-  sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
-  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-	
-	if (HAL_ADC_Start(&hadc) != HAL_OK)
-  {
-    /* Start Conversation Error */
-    Error_Handler();
-  }
-
-}
-
-/* RTC init function 
-static void MX_RTC_Init(void)
-{
-
-  RTC_TimeTypeDef sTime;
-  RTC_DateTypeDef sDate;
-
-  hrtc.Instance = RTC;
-if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2){
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 127;
-  hrtc.Init.SynchPrediv = 255;
-  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
-  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
-  sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 0x1;
-  sDate.Year = 0x0;
-
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-    HAL_RTCEx_BKUPWrite(&hrtc,RTC_BKP_DR0,0x32F2);
-  }
-
-}*/
 
 /* SPI1 init function */
 static void MX_SPI1_Init(void)
@@ -400,37 +241,24 @@ static void MX_GPIO_Init(void)
 
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
-/* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
-{
-	
-  /* USER CODE BEGIN 5 */
-	
+{	
+	Flash_Init();
 	HCMS_Init();
-	
 	System_Init();
 	Graphic_Init();
-  /* Infinite loop */
-	
-	  /* Check and handle if the system was resumed from StandBy mode */ 
-  if(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
-  {
-    /* Clear Standby flag */
-    __HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB); 
-  }
-	
-  for(;;)
+	ADC_Init();
+	  
+	/* Check and handle if the system was resumed from StandBy mode */ 
+  if(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)__HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB); // Clear Standby flag 
+    
+  while(1)
   {
 		System_Process();
 		Graphic_Process();
 		
 		osDelay(1);
   }
-  /* USER CODE END 5 */ 
 }
 
 /**

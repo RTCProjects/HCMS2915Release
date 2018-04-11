@@ -37,7 +37,7 @@ typedef enum{				// real pwm
 	PWM_BRIGHT_047	= 12,	// 47%
 	PWM_BRIGHT_060	= 13,	// 60%
 	PWM_BRIGHT_080	= 14,	// 80%
-	PWM_PRIGHT_100	= 15 	// 100%
+	PWM_BRIGHT_100	= 15 	// 100%
 } pwm_brightness_t;
 
 #define MIN_BRIGHTNESS			PWM_BRIGHT_002
@@ -58,7 +58,8 @@ typedef enum{
 	BLINK_R1,
 	BLINK_R2,
 	BLINK_R3,
-	SCROLL_R3
+	SCROLL_R3,
+	BLINK_RH
 }eEffectType;
 
 typedef union{
@@ -67,8 +68,9 @@ typedef union{
 		uint8_t	r2_blink : 1;
 		uint8_t	r3_blink : 1;
 		uint8_t	r3_scroll : 1;
+		uint8_t	rh_blink : 1;
 		
-		uint8_t	reserved : 4;
+		uint8_t	reserved : 3;
 	};
 	uint8_t	mode_byte;
 }tEffectMode;
@@ -121,8 +123,10 @@ void HCMS_PutStr(char *);
 void HCMS_Update(void);
 void HCMS_Clear(void);
 void HCMS_On(uint8_t On);
-
+void HCMS_Brightness(void);
 void HCMS_Effect(eEffectType eEffect);
-
+void HCMS_BrightChange(void);
 void HCMS_Process(void const * argument);
+
+uint8_t	*HCMS_RawArray(void);
 #endif

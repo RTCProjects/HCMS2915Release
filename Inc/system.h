@@ -7,7 +7,7 @@
 #define SLEEP_MODE_VALUE 	5000
 #define LO_PRESS_TIME	100
 #define HI_PRESS_TIME 1000
-
+#define CHRG_WAIT_TIME	50
 typedef enum
 {
 	SYS_TIME			 = 0x01,
@@ -19,17 +19,18 @@ typedef enum
 	SYS_SET_DAY = 0x07,
 	SYS_SET_MONTH = 0x08,
 	SYS_SET_YEAR = 0x09,
-	SYS_CHARGE 
+	SYS_BAT 	= 0x0A,
+	SYS_SET_BRIGHT = 0x0B
 }eSystemState;
 
 typedef enum
 {
 	SELECT_DEFAULT		= 0x00,
-	SELECT_BRIGHT		= 0x01,
-	SELECT_TIME		  = 0x02,
-	SELECT_DATE			= 0x03,
-	SELECT_EXIT 		= 0x04
-
+	SELECT_TIME		  	= 0x01,
+	SELECT_DATE				= 0x02,
+	SELECT_BRIGHT			= 0x03,
+	SELECT_BAT 				= 0x04,
+	SELECT_EXIT 			= 0x05,
 }eSettingsState;
 
 typedef enum
@@ -38,7 +39,7 @@ typedef enum
 	CHARGE_ON = 0x01
 }eChargeState;
 
-#define FIRST_SETTING SELECT_BRIGHT
+#define FIRST_SETTING SELECT_TIME
 #define LAST_SETTING 	SELECT_EXIT
 
 
@@ -47,7 +48,6 @@ void System_Process(void);
 void System_SetState(eSystemState State);
 void System_SetSettingsState(eSettingsState State);
 void System_EnterStandBy(void);
-void System_ADCVoltage(void);
 
 RTC_TimeTypeDef *System_GetRTCTime(void);
 RTC_DateTypeDef *System_GetRTCDate(void);

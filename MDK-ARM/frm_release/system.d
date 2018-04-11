@@ -35,6 +35,7 @@ frm_release\system.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_rtc_ex.h
 frm_release\system.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_spi.h
 frm_release\system.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim.h
 frm_release\system.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim_ex.h
+frm_release\system.o: ../Inc/flash.h
 frm_release\system.o: ../Inc/hcms2915.h
 frm_release\system.o: ../Inc/font5x7.h
 frm_release\system.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\string.h

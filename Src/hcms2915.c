@@ -1,6 +1,8 @@
 #include "hcms2915.h"
 #include "graphic.h"
 #include "cmsis_os.h"
+#include "system.h"
+#include "flash.h"
 
 char hcms_screen[SCR_SIZE];
 
@@ -18,10 +20,11 @@ void	HCMS_Init()
 	effectMode.r1_blink = 0;
 	effectMode.r2_blink = 0;
 	effectMode.r3_blink = 0;
-	effectMode.r3_scroll = 1;
+	effectMode.r3_scroll = 0;
+	effectMode.rh_blink = 0;
 	
 
-	def_ctrl_r0.brightness = DEFAULT_BRIGHTNESS;
+	def_ctrl_r0.brightness = (pwm_brightness_t)Flash_Settings()->brightness;
 	def_ctrl_r0.peak_current = DEFAULT_PEAK_CURRENT;
 	def_ctrl_r0.sleep_mode = 1;
 	def_ctrl_r0.reg = 0;
@@ -43,7 +46,7 @@ void	HCMS_Init()
 	
 
 	
-	osThreadDef(hcmsTask, HCMS_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE + 0x200);
+	osThreadDef(hcmsTask, HCMS_Process, osPriorityNormal, 0, configMINIMAL_STACK_SIZE );
   hcms2915TaskHandle = osThreadCreate(osThread(hcmsTask), NULL);
 	
 	
@@ -114,7 +117,7 @@ void HCMS_RawPixels(uint8_t *buf, int sz)
 	for(int i=0; i < sz; i++)
 	{
 		if(effectMode.r1_blink){
-			if(i<=10){
+			if(i<10){
 				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
 				else HCMS_Put_Byte(0);				
 			}
@@ -123,7 +126,7 @@ void HCMS_RawPixels(uint8_t *buf, int sz)
 			}
 		}
 		else if(effectMode.r2_blink){
-			if(i>=15 && i<=25){
+			if(i>=15 && i<25){
 				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
 				else HCMS_Put_Byte(0);				
 			}
@@ -153,6 +156,16 @@ void HCMS_RawPixels(uint8_t *buf, int sz)
 			else
 				HCMS_Put_Byte(buf[i]);
 		}
+		else if(effectMode.rh_blink){
+			if(i>=20){
+				if(uBlink > 0)HCMS_Put_Byte(buf[i]);
+				else HCMS_Put_Byte(0);				
+			}
+			else{
+				HCMS_Put_Byte(buf[i]);
+			}			
+		}
+		
 		else
 			HCMS_Put_Byte(buf[i]);
 	}
@@ -165,13 +178,27 @@ void HCMS_Clear()
 	
 }
 
+void HCMS_Bright(pwm_brightness_t br)
+{
+	def_ctrl_r0.brightness = br;
+	HCMS_Ctrl_Register(def_ctrl_r0.byte);
+}
+
+void HCMS_BrightChange()
+{
+	Flash_Settings()->brightness++;
+	
+	if(Flash_Settings()->brightness > PWM_BRIGHT_100)
+		Flash_Settings()->brightness = PWM_BRIGHT_002;
+	
+	HCMS_Bright((pwm_brightness_t)Flash_Settings()->brightness);
+}
+
 void HCMS_PutStr(char *str)
 {
-
-	//HCMS_DataMode();
-	//HCMS_Enable();
-	 uint16_t ind = 0;
-	 uint16_t	bufPos = 0;
+	uint16_t ind = 0;
+	uint16_t	bufPos = 0;
+	
 	for(int i = 0;i<strlen(str);i++){
 		__IO char curCh = str[i];
 	
@@ -181,19 +208,11 @@ void HCMS_PutStr(char *str)
 			bufPos = (curCh - 0x62) * 5;
 		
 		for(int j = bufPos;j<bufPos+5;j++){
-			   //HCMS_Put_Byte( font5x7[j]);
 			hcms_screen[ind++] = font5x7[j];
 		}
 	}
-	
-	//HCMS_Disable();
 }
 
-/*void HCMS_Update()
-{
-	HCMS_RawPixels(((uint8_t*)&hcms_screen),SCR_SIZE);
-}
-*/
 void HCMS_On(uint8_t On)
 {
 	  def_ctrl_r0.sleep_mode = !On;
@@ -229,13 +248,32 @@ void HCMS_Effect(eEffectType eEffect)
 			effectMode.mode_byte = 0;
 			effectMode.r3_scroll = 1;
 		}break;
+		
+		case BLINK_RH:{
+			effectMode.mode_byte = 0;
+			effectMode.rh_blink = 1;
+		}break;		
 	}
 }
 void HCMS_Process(void const * argument)
 {	
 	while(1)
 	{
+		if(System_GetChargeState() == CHARGE_ON && System_GetState() == SYS_TIME)
+		{
+		hcms_screen[25] = 0x7E;
+		hcms_screen[26] = 0x7F;
+		hcms_screen[27] = 0x7F;
+		hcms_screen[28] = 0x7F;
+		hcms_screen[29] = 0x7E;
+		}
+		
 		HCMS_RawPixels(((uint8_t*)&hcms_screen),SCR_SIZE);
 		osDelay(50);
 	}
+}
+
+uint8_t	*HCMS_RawArray()
+{
+	return (uint8_t*)hcms_screen;
 }
