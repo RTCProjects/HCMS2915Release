@@ -299,8 +299,13 @@ void System_Process()
 		btnPressCnt = 0;
 
 	}
+	
+	
+	
 	if(eCurrentSysState == SYS_TIME || eCurrentSysState == SYS_DATE || eCurrentSysState == SYS_BAT)
 	{
+		if(System_GetChargeState() == CHARGE_ON)
+			return;
 		
 		sleepCounter++;
 		if(sleepCounter > 4000 && sleepCounter < 7000){

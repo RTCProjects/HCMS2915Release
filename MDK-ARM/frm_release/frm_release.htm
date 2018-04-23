@@ -3,7 +3,7 @@
 <title>Static Call Graph - [frm_release\frm_release.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image frm_release\frm_release.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Apr 11 15:06:52 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Mon Apr 23 22:06:17 2018
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -999,7 +999,7 @@ Global Symbols
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HCMS_Ctrl_Register
 </UL>
 
-<P><STRONG><a name="[9e]"></a>HCMS_Init</STRONG> (Thumb, 140 bytes, Stack size 40 bytes, hcms2915.o(i.HCMS_Init))
+<P><STRONG><a name="[9e]"></a>HCMS_Init</STRONG> (Thumb, 142 bytes, Stack size 40 bytes, hcms2915.o(i.HCMS_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = HCMS_Init &rArr; osThreadCreate &rArr; xTaskCreate &rArr; pvPortMalloc &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_Settings
@@ -1020,7 +1020,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_EnterStandBy
 </UL>
 
-<P><STRONG><a name="[27]"></a>HCMS_Process</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, hcms2915.o(i.HCMS_Process))
+<P><STRONG><a name="[27]"></a>HCMS_Process</STRONG> (Thumb, 136 bytes, Stack size 0 bytes, hcms2915.o(i.HCMS_Process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = HCMS_Process &rArr; HCMS_RawPixels &rArr; HCMS_Put_Byte &rArr; HAL_SPI_Transmit &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_GetState
@@ -1172,6 +1172,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HCMS_Process
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_Process
 </UL>
 
 <P><STRONG><a name="[ba]"></a>System_GetDateTimeFromRTC</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, system.o(i.System_GetDateTimeFromRTC))
@@ -1210,7 +1211,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartDefaultTask
 </UL>
 
-<P><STRONG><a name="[ac]"></a>System_Process</STRONG> (Thumb, 636 bytes, Stack size 24 bytes, system.o(i.System_Process))
+<P><STRONG><a name="[ac]"></a>System_Process</STRONG> (Thumb, 644 bytes, Stack size 24 bytes, system.o(i.System_Process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = System_Process &rArr; System_EnterStandBy &rArr; HCMS_On &rArr; HCMS_Ctrl_Register &rArr; HCMS_Put_Byte &rArr; HAL_SPI_Transmit &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_SetTime
@@ -1220,6 +1221,7 @@ Global Symbols
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_SetState
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_GetDateTimeFromRTC
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_EnterStandBy
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_GetChargeState
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HCMS_Effect
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HCMS_BrightChange
@@ -1667,7 +1669,7 @@ Local Symbols
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskIncrementTick
 </UL>
 
-<P><STRONG><a name="[be]"></a>_fp_digits</STRONG> (Thumb, 344 bytes, Stack size 64 bytes, printfa.o(i._fp_digits), UNUSED)
+<P><STRONG><a name="[be]"></a>_fp_digits</STRONG> (Thumb, 316 bytes, Stack size 56 bytes, printfa.o(i._fp_digits), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv

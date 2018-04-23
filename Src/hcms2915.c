@@ -10,6 +10,7 @@ static ctrl_reg0_t def_ctrl_r0;
 static ctrl_reg1_t def_ctrl_r1;
 static tEffectMode	effectMode;
 
+uint8_t	uBatteryChrgAnim = 0;
 int8_t	uScrollY = 0;
 int8_t	uBlink = 0; 
 uint8_t	uWaitCnt = 10;
@@ -36,6 +37,7 @@ void	HCMS_Init()
 	
 	uBlink = 0;
 	uWaitCnt = 0;
+	uBatteryChrgAnim = 0;
 	
 	HCMS_Reset();
 	HCMS_CtrlMode();
@@ -260,13 +262,57 @@ void HCMS_Process(void const * argument)
 	while(1)
 	{
 		if(System_GetChargeState() == CHARGE_ON && System_GetState() == SYS_TIME)
-		{
-		hcms_screen[25] = 0x7E;
-		hcms_screen[26] = 0x7F;
-		hcms_screen[27] = 0x7F;
-		hcms_screen[28] = 0x7F;
-		hcms_screen[29] = 0x7E;
-		}
+		{  
+		
+				if(uBatteryChrgAnim >= 0 && uBatteryChrgAnim <= 10){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x41;
+					hcms_screen[27] = 0x41;
+					hcms_screen[28] = 0x41;
+					hcms_screen[29] = 0x7E;					
+				}
+				else if(uBatteryChrgAnim > 10 && uBatteryChrgAnim <= 20){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x61;
+					hcms_screen[27] = 0x61;
+					hcms_screen[28] = 0x61;
+					hcms_screen[29] = 0x7E;					
+				}
+				else if(uBatteryChrgAnim > 20 && uBatteryChrgAnim <= 30){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x71;
+					hcms_screen[27] = 0x71;
+					hcms_screen[28] = 0x71;
+					hcms_screen[29] = 0x7E;					
+				}
+				else if(uBatteryChrgAnim > 30 && uBatteryChrgAnim <= 40){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x79;
+					hcms_screen[27] = 0x79;
+					hcms_screen[28] = 0x79;
+					hcms_screen[29] = 0x7E;							
+				}
+				else if(uBatteryChrgAnim > 40 && uBatteryChrgAnim <= 50){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x7D;
+					hcms_screen[27] = 0x7D;
+					hcms_screen[28] = 0x7D;
+					hcms_screen[29] = 0x7E;							
+				}
+				else if(uBatteryChrgAnim > 50 && uBatteryChrgAnim <= 60){
+					hcms_screen[25] = 0x7E;
+					hcms_screen[26] = 0x7F;
+					hcms_screen[27] = 0x7F;
+					hcms_screen[28] = 0x7F;
+					hcms_screen[29] = 0x7E;					
+				}
+        else
+					uBatteryChrgAnim = 0;
+				uBatteryChrgAnim++;
+			}
+			
+			
+		
 		
 		HCMS_RawPixels(((uint8_t*)&hcms_screen),SCR_SIZE);
 		osDelay(50);
