@@ -133,6 +133,8 @@ void System_Process()
 							}
 						}break;
 						
+						case SELECT_FRM:{}break;
+						
 						case SELECT_EXIT:
 						{
 							if(btnPressCnt > HI_PRESS_TIME){

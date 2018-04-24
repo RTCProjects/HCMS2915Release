@@ -54,7 +54,8 @@
 /* Includes ------------------------------------------------------------------*/
 
 /* USER CODE BEGIN Includes */
-
+#define BATTERY_LOW_VAL 	2.8f
+#define FRM_VERSION_STR		"FrmVr1.1"
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/

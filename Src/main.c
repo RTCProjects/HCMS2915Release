@@ -248,6 +248,8 @@ void StartDefaultTask(void const * argument)
 	System_Init();
 	Graphic_Init();
 	ADC_Init();
+	
+
 	  
 	/* Check and handle if the system was resumed from StandBy mode */ 
   if(__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)__HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB); // Clear Standby flag 

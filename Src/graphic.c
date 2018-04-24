@@ -12,6 +12,7 @@ const char	*strSettingsText = "Ќастройки";
 const char	*strBrightText	 = "”стяр-ть";
 const char  *strTimeText		 = "”ст¬рем€";
 const char  *strDateText		 = "”стƒату";
+const char	*strFrmText			 = FRM_VERSION_STR;
 const char	*strExitText		 = "-=Exit=-";
 
 const char	*strDays[] = {"","ѕн","¬т","—р","„т","ѕт","—б","¬с"};
@@ -33,7 +34,9 @@ void Graphic_Process()
 	eSystemState	currensSysState = System_GetState();
 	tADCBattery		adcBattery = ADC_Battery();
 	
-
+	if(adcBattery.voltage <= BATTERY_LOW_VAL){
+		System_EnterStandBy();
+	}
 	
 	currentTime = System_GetRTCTime();
 	currentDate = System_GetRTCDate();
@@ -97,7 +100,8 @@ void Graphic_Process()
 					sprintf(strOutBuf,"%.1fv%.3d%%",adcBattery.voltage,adcBattery.percent);
 					HCMS_PutStr(strOutBuf);
 				}break;
-				case SELECT_BRIGHT:HCMS_PutStr((char*)strBrightText);break;
+				case SELECT_BRIGHT:		HCMS_PutStr((char*)strBrightText);break;
+				case SELECT_FRM:			HCMS_PutStr((char*)strFrmText);break;
 				case SELECT_EXIT:			HCMS_PutStr((char*)strExitText);  		break;
 			}
 

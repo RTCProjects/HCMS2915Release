@@ -30,7 +30,9 @@ typedef enum
 	SELECT_DATE				= 0x02,
 	SELECT_BRIGHT			= 0x03,
 	SELECT_BAT 				= 0x04,
-	SELECT_EXIT 			= 0x05,
+	SELECT_FRM				= 0x05,
+	SELECT_EXIT 			= 0x06,
+	
 }eSettingsState;
 
 typedef enum

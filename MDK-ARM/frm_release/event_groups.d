@@ -1,8 +1,8 @@
 frm_release\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
-frm_release\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+frm_release\event_groups.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stdlib.h
 frm_release\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-frm_release\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-frm_release\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+frm_release\event_groups.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stddef.h
+frm_release\event_groups.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stdint.h
 frm_release\event_groups.o: ../Inc/FreeRTOSConfig.h
 frm_release\event_groups.o: ../Inc/main.h
 frm_release\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

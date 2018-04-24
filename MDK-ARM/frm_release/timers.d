@@ -1,8 +1,8 @@
 frm_release\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
-frm_release\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+frm_release\timers.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stdlib.h
 frm_release\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-frm_release\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-frm_release\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+frm_release\timers.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stddef.h
+frm_release\timers.o: C:\Keil_v521A\ARM\ARMCC\Bin\..\include\stdint.h
 frm_release\timers.o: ../Inc/FreeRTOSConfig.h
 frm_release\timers.o: ../Inc/main.h
 frm_release\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
